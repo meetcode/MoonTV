@@ -10,11 +10,13 @@ interface SearchResult {
   poster: string;
   source: string;
   source_name: string;
-  episodes?: number;
+  episodes: string[];
 }
 
 interface AggregateCardProps {
   /** 同一标题下的多个搜索结果 */
+  query?: string;
+  year?: string;
   items: SearchResult[];
 }
 
@@ -52,14 +54,24 @@ function PlayCircleSolid({
  * 点击播放按钮 -> 跳到第一个源播放
  * 点击卡片其他区域 -> 跳到聚合详情页 (/aggregate)
  */
-const AggregateCard: React.FC<AggregateCardProps> = ({ items }) => {
+const AggregateCard: React.FC<AggregateCardProps> = ({
+  query = '',
+  year = 0,
+  items,
+}) => {
   // 使用列表中的第一个结果做展示 & 播放
   const first = items[0];
   const [playHover, setPlayHover] = useState(false);
   const router = useRouter();
 
   return (
-    <Link href={`/aggregate?q=${encodeURIComponent(first.title)}`}>
+    <Link
+      href={`/aggregate?q=${encodeURIComponent(
+        query
+      )}&title=${encodeURIComponent(first.title)}${
+        year ? `&year=${encodeURIComponent(year)}` : ''
+      }`}
+    >
       <div className='group relative w-full rounded-lg bg-transparent shadow-none flex flex-col'>
         {/* 封面图片 2:3 */}
         <div className='relative aspect-[2/3] w-full overflow-hidden rounded-md'>
@@ -68,6 +80,7 @@ const AggregateCard: React.FC<AggregateCardProps> = ({ items }) => {
             alt={first.title}
             fill
             className='object-cover'
+            unoptimized
           />
 
           {/* Hover 层 & 播放按钮 */}
@@ -84,7 +97,9 @@ const AggregateCard: React.FC<AggregateCardProps> = ({ items }) => {
                   router.push(
                     `/play?source=${first.source}&id=${
                       first.id
-                    }&title=${encodeURIComponent(first.title)}&from=aggregate`
+                    }&title=${encodeURIComponent(first.title)}${
+                      year ? `&year=${year}` : ''
+                    }&from=aggregate`
                   );
                 }}
                 onMouseEnter={() => setPlayHover(true)}
@@ -99,7 +114,7 @@ const AggregateCard: React.FC<AggregateCardProps> = ({ items }) => {
         {/* 标题 */}
         <div className='absolute top-[calc(100%+0.2rem)] left-0 right-0'>
           <div className='flex flex-col items-center justify-center'>
-            <span className='text-gray-900 font-semibold truncate w-full text-center text-xs sm:text-sm'>
+            <span className='text-gray-900 font-semibold truncate w-full text-center text-xs sm:text-sm dark:text-gray-200'>
               {first.title}
             </span>
           </div>

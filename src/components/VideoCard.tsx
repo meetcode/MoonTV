@@ -14,6 +14,7 @@ interface VideoCardProps {
   episodes?: number;
   source_name: string;
   progress?: number;
+  year?: string;
   from?: string;
   currentEpisode?: number;
   onDelete?: () => void;
@@ -79,6 +80,7 @@ export default function VideoCard({
   source,
   source_name,
   progress,
+  year,
   from,
   currentEpisode,
   onDelete,
@@ -112,6 +114,7 @@ export default function VideoCard({
       const newState = await toggleFavorite(source, id, {
         title,
         source_name,
+        year: year || '',
         cover: poster,
         total_episodes: episodes ?? 1,
         save_time: Date.now(),
@@ -147,12 +150,18 @@ export default function VideoCard({
     <Link
       href={`/detail?source=${source}&id=${id}&title=${encodeURIComponent(
         title
-      )}${from ? `&from=${from}` : ''}`}
+      )}${year ? `&year=${year}` : ''}${from ? `&from=${from}` : ''}`}
     >
       <div className='group relative w-full rounded-lg bg-transparent shadow-none flex flex-col'>
         {/* 海报图片 - 2:3 比例 */}
         <div className='relative aspect-[2/3] w-full overflow-hidden rounded-md'>
-          <Image src={poster} alt={title} fill className='object-cover' />
+          <Image
+            src={poster}
+            alt={title}
+            fill
+            className='object-cover'
+            unoptimized
+          />
 
           {/* Hover 效果 */}
           <div className='absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center group pointer-events-none'>
@@ -168,7 +177,7 @@ export default function VideoCard({
                   router.push(
                     `/play?source=${source}&id=${id}&title=${encodeURIComponent(
                       title
-                    )}`
+                    )}${year ? `&year=${year}` : ''}`
                   );
                 }}
                 onMouseEnter={() => setPlayHover(true)}
@@ -218,7 +227,7 @@ export default function VideoCard({
 
           {/* 播放进度条 */}
           {progress !== undefined && (
-            <div className='absolute bottom-0 left-0 right-0 h-1 bg-gray-300'>
+            <div className='absolute bottom-0 left-0 right-0 h-1 bg-gray-300 dark:bg-gray-600'>
               <div
                 className='h-full bg-blue-500 transition-all duration-300'
                 style={{ width: `${progress}%` }}
@@ -237,14 +246,14 @@ export default function VideoCard({
         </div>
 
         {/* 信息层 */}
-        <div className='absolute top-[calc(100%+0.2rem)] left-0 right-0'>
+        <div className='absolute top-[calc(100%+0.5rem)] left-0 right-0'>
           <div className='flex flex-col items-center justify-center'>
-            <span className='text-gray-900 font-semibold truncate w-full text-center text-xs sm:text-sm'>
+            <span className='text-gray-900 font-semibold truncate w-full text-center text-xs sm:text-sm dark:text-gray-200'>
               {title}
             </span>
             {source && (
-              <span className='text-gray-500 text-[0.5rem] sm:text-xs w-full text-center mt-1'>
-                <span className='inline-block border border-gray-500/60 rounded px-2 py-[1px]'>
+              <span className='text-gray-500 text-[0.5rem] sm:text-xs w-full text-center mt-1 dark:text-gray-400'>
+                <span className='inline-block border border-gray-500/60 rounded px-2 py-[1px] dark:border-gray-400/60'>
                   {source_name}
                 </span>
               </span>

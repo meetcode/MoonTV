@@ -22,11 +22,12 @@
 
 - 🔍 **多源聚合搜索**：内置数十个免费资源站点，一次搜索立刻返回全源结果。
 - 📄 **丰富详情页**：支持剧集列表、演员、年份、简介等完整信息展示。
-- ▶️ **流畅在线播放**：集成 HLS.js & ArtPlayer。
+- ▶️ **流畅在线播放**：集成 HLS.js & VidStack。
 - ❤️ **收藏 + 继续观看**：LocalStorage 存储，后续扩展 DB 存储。
 - 📱 **PWA**：离线缓存、安装到桌面/主屏，移动端原生体验。
 - 🌗 **响应式布局**：桌面侧边栏 + 移动底部导航，自适应各种屏幕尺寸。
 - 🚀 **极简部署**：一条 Docker 命令即可将完整服务跑起来，或免费部署到 Vercel。
+- 👿 **智能去广告**：自动跳过视频中的切片广告（实验性）
 
 <details>
   <summary>点击查看项目截图</summary>
@@ -37,6 +38,7 @@
 
 - [技术栈](#技术栈)
 - [部署](#部署)
+- [环境变量](#环境变量)
 - [配置说明](#配置说明)
 - [Roadmap](#roadmap)
 - [安全与隐私提醒](#安全与隐私提醒)
@@ -45,14 +47,14 @@
 
 ## 技术栈
 
-| 分类      | 主要依赖                                                                             |
-| --------- | ------------------------------------------------------------------------------------ |
-| 前端框架  | [Next.js 14](https://nextjs.org/) · App Router                                       |
-| UI & 样式 | [Tailwind&nbsp;CSS 3](https://tailwindcss.com/)                                      |
-| 语言      | TypeScript 4                                                                         |
-| 播放器    | [ArtPlayer](https://artplayer.org/) · [HLS.js](https://github.com/video-dev/hls.js/) |
-| 代码质量  | ESLint · Prettier · Jest                                                             |
-| 部署      | Docker · Vercel                                                                      |
+| 分类      | 主要依赖                                                                          |
+| --------- | --------------------------------------------------------------------------------- |
+| 前端框架  | [Next.js 14](https://nextjs.org/) · App Router                                    |
+| UI & 样式 | [Tailwind&nbsp;CSS 3](https://tailwindcss.com/)                                   |
+| 语言      | TypeScript 4                                                                      |
+| 播放器    | [VidStack](https://vidstack.io/) · [HLS.js](https://github.com/video-dev/hls.js/) |
+| 代码质量  | ESLint · Prettier · Jest                                                          |
+| 部署      | Docker · Vercel                                                                   |
 
 ## 部署
 
@@ -124,6 +126,16 @@ Pull Bot 会反复触发无效的 PR 和垃圾邮件，严重干扰项目维护�
 
 如需手动同步主仓库更新，也可以使用 GitHub 官方的 [Sync fork](https://docs.github.com/cn/github/collaborating-with-issues-and-pull-requests/syncing-a-fork) 功能。
 
+## 环境变量
+
+| 变量                                | 说明                               | 可选值                                                           | 默认值       |
+| ----------------------------------- | ---------------------------------- | ---------------------------------------------------------------- | ------------ |
+| PASSWORD                            | 实例访问密码，留空则不启用密码保护 | 任意字符串                                                       | （空）       |
+| NEXT_PUBLIC_STORAGE_TYPE            | 播放记录/收藏的存储方式            | localstorage（本地浏览器存储）、database（后端数据库，暂不支持） | localstorage |
+| NEXT_PUBLIC_DISABLE_BLOCKAD         | 禁用智能去广告功能                 | true / false                                                     | false        |
+| NEXT_PUBLIC_SEARCH_MAX_PAGE         | 搜索接口可拉取的最大页数           | 1-50                                                             | 5            |
+| NEXT_PUBLIC_AGGREGATE_SEARCH_RESULT | 搜索结果默认是否按标题和年份聚合   | true / false                                                     | true         |
+
 ## 配置说明
 
 所有可自定义项集中在根目录的 `config.json` 中：
@@ -189,6 +201,6 @@ MoonTV 支持标准的苹果 CMS V10 API 格式。
 
 - [ts-nextjs-tailwind-starter](https://github.com/theodorusclarence/ts-nextjs-tailwind-starter) — 项目最初基于该脚手架。
 - [LibreTV](https://github.com/LibreSpark/LibreTV) — 由此启发，站在巨人的肩膀上。
-- [ArtPlayer](https://github.com/artplayer-org/artplayer) — 提供强大的网页视频播放器。
+- [VidStack](https://vidstack.io/) — 提供强大的网页视频播放器。
 - [HLS.js](https://github.com/video-dev/hls.js) — 实现 HLS 流媒体在浏览器中的播放支持。
 - 感谢所有提供免费影视接口的站点。
