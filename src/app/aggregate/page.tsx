@@ -6,20 +6,9 @@ import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
 
-import PageLayout from '@/components/PageLayout';
+import { SearchResult } from '@/lib/types';
 
-interface SearchResult {
-  id: string;
-  title: string;
-  poster: string;
-  episodes: string[];
-  source: string;
-  source_name: string;
-  class?: string;
-  year: string;
-  desc?: string;
-  type_name?: string;
-}
+import PageLayout from '@/components/PageLayout';
 
 function AggregatePageClient() {
   const searchParams = useSearchParams();
@@ -113,7 +102,7 @@ function AggregatePageClient() {
 
   return (
     <PageLayout activePath='/aggregate'>
-      <div className='px-2 sm:px-10 py-4 sm:py-8 overflow-visible'>
+      <div className='flex flex-col min-h-full px-2 sm:px-10 pt-4 sm:pt-8 pb-[calc(3.5rem+env(safe-area-inset-bottom))] overflow-visible'>
         {loading ? (
           <div className='flex items-center justify-center min-h-[60vh]'>
             <div className='animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500'></div>
